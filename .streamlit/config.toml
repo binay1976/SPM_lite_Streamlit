@@ -1,0 +1,23 @@
+[server]
+port = 8501
+enableCORS = false
+
+[theme]
+base="light"
+primaryColor="#000000"
+backgroundColor="#FFFFFF"
+secondaryBackgroundColor="#F5F5F5"
+textColor="#000000"
+font="sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
+serverAddress = "localhost"
+serverPort = 8051
+
+[client]
+toolbarMode = "minimal"
+

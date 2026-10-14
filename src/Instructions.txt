@@ -1,0 +1,74 @@
+git add .  
+git commit -m "new"  
+git push -f 
+
+if first time then-----------------------------------------------------------------------------------
+
+  git init
+  git add README.md
+  git commit -m "first commit"
+  git branch -M main
+  git remote add origin https://github.com/binay1976/SPM_Docker_MySQL.git
+  git push -u origin main
+
+  git push -f # to push forcefully
+
+
+Create and install requirement.txt:-------------------------------------------------------------------------------------------------------------
+  pip freeze > requirements.txt
+  pip install -r requirements.txt
+
+  pip install --upgrade streamlit
+  python -m pip install --upgrade pip
+
+
+Create My env:-------------------------------------------------------------------------------------------------------------
+https://blog.finxter.com/python-to-exe-without-pyinstaller-a-comprehensive-guide/
+  Install Env :- pip install virtualenv
+  Create Env:- python -m venv docker_env
+  Activate env :- docker_env\Scripts\activate
+  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+Open Ports:-------------------------------------------------------------------------------------------------------------
+  netsh advfirewall firewall add rule name="Docker-MySQL Port 8050 Inbound" dir=in action=allow protocol=TCP localport=8050
+  netsh advfirewall firewall add rule name="Docker-MySQL Port 8050 Outbound" dir=out action=allow protocol=TCP localport=8050
+
+
+
+CICD Pipeline Code ----------------------------------------------------------------------------------------------------------
+Create Folder and File  :- "github\workflows\docker-publish.yml"
+Paste below Code in .yml file "-
+
+name: Build and Push SPM Docker image
+
+on:
+  push:
+    branches:
+      - main  # or 'master' or any branch you use
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: cris1022/spm-docker-app:latest
+
+
+
